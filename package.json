@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "express": "^4.18.1",
+    "g": "^2.0.1",
+    "hbs": "^4.2.0",
+    "pg": "^8.7.3"
+  },
+  "name": "boostrap",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agusAlfandi/day-1-refactor-with-bootsrapt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agusAlfandi/day-1-refactor-with-bootsrapt/issues"
+  },
+  "homepage": "https://github.com/agusAlfandi/day-1-refactor-with-bootsrapt#readme",
+  "description": ""
+}

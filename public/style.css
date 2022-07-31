@@ -1,0 +1,157 @@
+/* Navbar */
+.bg-nav {
+    background-color: #f3f2f2;
+    height: 7vh;
+}
+.btn-custom {
+    background-color: #ec4d37;
+}
+.nav-item {
+    margin-left: 5px;
+}
+.button-active {
+    color: #ec4d37;
+    font-weight: bold;
+} 
+
+/* profile */
+.bg-full-page {
+    background-color: #e1e5e9;
+    height: 93vh;
+}
+.desc-p {
+    text-align: justify;
+}
+.pic-download {
+    width: 25px;
+    height: 20px;
+}
+.btn-custom-1 {
+    background-color: black;
+}
+.size-img {
+    width: 225px;
+    height: 300px;;
+}
+.p-name {
+    margin-bottom: 0px;
+}
+
+/* Project list */
+.bg-list-item {
+    background-color: #f1f1f1;
+}
+.manage-title-list {
+    height: 21px;
+    overflow: hidden;
+}
+.card-project {
+    height: 500px;
+}
+.list-item-project {
+    padding-left: 80px;
+}
+.img-project {
+    height: 198px;
+    /* padding-left: 10px; */
+    width: 255px;
+}
+.p-desc-project {
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.icon {
+    height: 40px;
+    width: 400px;
+}
+.card-body {
+    padding: 0px;
+}
+.icon img {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
+.project-list-edit {
+    width: 80px;
+}
+
+/* Form add Project */
+.container-form {
+    height: 93vh;
+    background-color: #e1e5e9;
+}
+.container-form form {
+    width: 500px;
+}
+.left-chechbox {
+    padding-left: 200px;
+}
+.start-date {
+    flex: 50%;
+}
+.end-date {
+    flex: 50%;
+}
+.start-date input {
+    height: 40px;
+    border-radius: 8px;
+    box-shadow: 3px 3px 5px rgb(212, 212, 212);
+    border: 1px solid rgb(204, 204, 204);
+    padding: 5px;
+    width: 96%;
+}
+.end-date input {
+    height: 40px;
+    border-radius: 8px;
+    box-shadow: 3px 3px 5px rgb(212, 212, 212);
+    border: 1px solid rgb(204, 204, 204);
+    padding: 5px; 
+    width: 96%;  
+}
+.textarea-risize {
+    resize: none;
+}
+
+/* Form Contact me */
+.container-form-2 {
+    background-color: #e1e5e9;
+    height: 93vh;
+}
+.container-form-2 form {
+    width: 500px;
+}
+.desc-contact-me {
+    resize: none;
+}
+
+/* detail project */
+.container-detail-project {
+    background-color: #e1e5e9;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+.detail-project {
+    width: 80%;
+    margin: 40px 0;
+}
+.detail-project h1 {
+    text-align: center;
+}
+.detail-project img {
+    width: 100%;
+    border-radius: 8px;
+}
+.detail-project p {
+    text-align: justify;
+    padding: 30px 0px;
+}
+.container-detail-project .author {
+    text-align: center;
+    font-weight: 100;
+    font-size: 20px;
+    line-height: 120%;
+    margin-bottom: 20px;
+}
