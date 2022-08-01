@@ -1,24 +1,25 @@
 const express = require("express");
-const { Client } = require("pg");
-const db = require("./connection/db");
+
+// const db = require("./connection/db");
 const app = express();
 const port = 5000;
 const isLogin = false;
-// let addProject = [];
+let addProject = [];
 
-// databas conection
-db.connect((err, _, done) => {
-  if (err) {
-    return console.log(err);
-  } else {
-    console.log("Connection database success");
-    done();
-  }
-});
+// database.conection
+// db.connect((err, _, done) => {
+//   if (err) {
+//     return console.log(err);
+//   } else {
+//     console.log("Connection database success");
+//     done();
+//   }
+// });
 
 app.set("view engine", "hbs");
 app.use("/public", express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
+// app.use(express.static("images"));
 
 // app.get("/index", (req, res) => {
 //   res.send("/index");
@@ -26,93 +27,71 @@ app.use(express.urlencoded({ extended: false }));
 // // console.log(__dirname);
 
 app.get("/index", (req, res) => {
-  db.connect((err, client, done) => {
-    if (err) {
-      console.log(err);
-    }
-    const query = "SELECT * FROM  tb_project";
+  // db.connect((err, client, done) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  //   const query = "SELECT * FROM  tb_project";
 
-    client.query(query, (err, result) => {
-      if (err) throw err;
+  //   client.query(query, (err, result) => {
+  //     if (err) throw err;
 
-      const data = result.rows;
+  //     const data = result.rows;
+  const newProject = addProject.map((project) => {
+    project.author = `Mr. Agus Alfandi`;
+    project.startDate = new Date(project.startDate);
+    project.endDate = new Date(project.endDate);
+    project.time = getFullTime(project.endDate, project.startDate);
 
-      const newProject = data.map((project) => {
-        const newDate = {
-          ...project,
-          author: `Mr. Agus Alfandi`,
-          startDate: new Date(project.start_Date),
-          endDate: new Date(project.endDate),
-          time: getFullTime(project.endDate, project.startDate),
-        };
-
-        return newDate;
-      });
-      res.render("index", { addProject: newProject });
-    });
-    done();
+    return project;
   });
+
+  console.log("data jadi", addProject);
+  res.render("index", { addProject: newProject });
 });
+// });
+// done();
+// });
+// });
 
-app.get("/add-project/:id", (req, res) => {
-  // const id = req.params.id;
-  // const data = addProject.find((items) => items.id == id);
+app.post("/updateData/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, startDate, endDate, description } = req.body;
 
-  // const Data = {
-  //   ...data,
-  //   title: req.body.title,
-  //   startDate: req.body.startDate,
-  //   endDate: req.body.endDate,
-  //   content: req.body.content,
-  //   Image: req.body.Image,
-  // };
+  addProject[id] = {
+    ...addProject[id],
+    title,
+    startDate,
+    endDate,
+    description,
+    // Image: req.body.Image,
+  };
 
-  res.redirect("/add-project");
+  res.redirect("/index");
 
   // res.send(Data);
 });
 
-app.get("/delete-project/:index", (req, res) => {
-  const index = req.params.index;
-  addProject.splice(index, 1);
-
-  res.redirect("/index");
+app.get("/updateData/:id", (req, res) => {
+  const { id } = req.params;
+  const Data = addProject[id];
+  console.log("data menta update:", Data);
+  res.render("updateData", { Data: { ...Data, id } });
 });
 
 app.post("/add-project", (req, res) => {
   const data = req.body;
   data.author = "Agus Alfandi";
-  data.id = 0;
   data.postAt = new Date();
 
-  // data.checkbox.forEach((e) => {
-  //   e.checked ? checkbox.push(e.value) : null;
-  // });
-
-  // if (data.technologies) {
-  //   technologies.forEach((e) =>
-  //     e.checked ? technologies.push(e.value) : null
-  //   );
-  //   return data;
-  // }
+  // const tech = addProject.forEach((techno) => {
+  //
+  // data.technologies = tech;
 
   addProject.push(data);
 
   // console.log("data mentah", addProject);
-
   res.redirect("/index");
-});
-
-app.get("/updateData", (req, res) => {
-  res.render("updateData");
-});
-
-app.get("/add-project", (req, res) => {
-  res.render("add-project");
-});
-
-app.get("/Contact-me", (req, res) => {
-  res.render("Contact-me");
 });
 
 app.get("/DetailProject/:index", (req, res) => {
@@ -128,6 +107,25 @@ app.get("/DetailProject/:index", (req, res) => {
   console.log(index);
 
   res.render("DetailProject", { project: newProject });
+});
+
+app.get("/delete-project/:index", (req, res) => {
+  const index = req.params.index;
+  addProject.splice(index, 1);
+
+  res.redirect("/index");
+});
+
+app.get("/updateData", (req, res) => {
+  res.render("updateData");
+});
+
+app.get("/add-project", (req, res) => {
+  res.render("add-project");
+});
+
+app.get("/Contact-me", (req, res) => {
+  res.render("Contact-me");
 });
 
 app.listen(port, () => {

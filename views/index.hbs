@@ -116,12 +116,15 @@
             <p class="card-text p-desc-project">
               {{this.description}}
             </p>
+
             <div class="icon mb-3">
-              {{this.icon}}
+              {{#each this.technologies}}
+              <img src="../public/img/{{this}}.png">
+              {{/each}}
             </div>
         </a>
         <div class="d-flex justify-content-between ">
-          <a href="/add-project/{{@index}}" class=" bg-black btn btn-primary project-list-edit"> Edit </a>
+          <a href="/updateData/{{@index}}" class="bg-black btn btn-primary project-list-edit"> Edit </a>
           <a href="/delete-project/{{@index}}" class=" bg-black btn btn-primary"> Delete </a>
         </div>
       </div>

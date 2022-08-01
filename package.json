@@ -21,5 +21,8 @@
     "url": "https://github.com/agusAlfandi/day-1-refactor-with-bootsrapt/issues"
   },
   "homepage": "https://github.com/agusAlfandi/day-1-refactor-with-bootsrapt#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }
