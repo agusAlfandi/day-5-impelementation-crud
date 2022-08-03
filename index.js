@@ -62,7 +62,7 @@ app.post("/updateData/:id", (req, res) => {
     start_date = '${start_date}', 
     end_date = '${end_date}', 
     description = '${description}',
-    technologies = '[${technologies}]',
+    technologies = '{${technologies}}'
     WHERE id = ${id}`;
 
     client.query(query, (err) => {
