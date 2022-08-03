@@ -108,7 +108,7 @@
       {{#each addProject}}
       {{!-- dinamic content --}}
       <div class="card p-3 shadow m-5 card-project" style="width: 18rem">
-        <a class="text-decoration-none text-black" href="/DetailProject/{{@index}}">
+        <a class="text-decoration-none text-black" href="/DetailProject/{{this.id}}">
           <img src="../public/img/mobile-apps.jpg" class="rounded img-project mb-3" alt="..." />
           <div class="card-body">
             <h5 class="card-title manage-title-list">{{this.title}}</h5>
@@ -124,8 +124,8 @@
             </div>
         </a>
         <div class="d-flex justify-content-between ">
-          <a href="/updateData/{{@index}}" class="bg-black btn btn-primary project-list-edit"> Edit </a>
-          <a href="/delete-project/{{@index}}" class=" bg-black btn btn-primary"> Delete </a>
+          <a href="/updateData/{{this.id}}" class="bg-black btn btn-primary project-list-edit"> Edit </a>
+          <a href="/delete-project/{{this.id}}" class=" bg-black btn btn-primary"> Delete </a>
         </div>
       </div>
     </div>

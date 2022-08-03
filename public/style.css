@@ -125,6 +125,10 @@
 .desc-contact-me {
     resize: none;
 }
+label img {
+    width: 25px;
+    height: 25px;
+}
 
 /* detail project */
 .container-detail-project {

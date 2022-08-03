@@ -52,22 +52,27 @@
         </div>
       </nav>
       <!-- Navbar -->
-
+  {{#each newData}}
   <!-- Start Project Detail -->
   <div class="container-detail-project">
     <div class="detail-project">
-      <h1 class="mb-3">{{project.title}}</h1>
-      <div class="mb-3 author">{{project.time}} | {{project.author}}</div>
+      <h1 class="mb-3">{{this.title}}</h1>
+      <div class="mb-3 author">{{this.time}} | {{this.author}}</div>
+        {{#each this.technologies}}
+      <div class="mb-3">
+        <img src="../public/img/{{this}}.png" style="width: 20px; heigth: 20px;">
+      </div>
+      {{/each}}
       <img src="../public/img/mobile-apps.jpg" />
       <p>
-        {{project.content}}
+        {{this.description}}
       </p>
       <div>
       </div>
     </div>
   </div>
   <!-- End Project Detail -->
-
+{{/each}}
 </body>
 
 </html>

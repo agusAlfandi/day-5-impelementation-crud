@@ -1,117 +1,160 @@
+const { query } = require("express");
 const express = require("express");
 
-// const db = require("./connection/db");
+const db = require("./connection/db");
 const app = express();
 const port = 5000;
 const isLogin = false;
-let addProject = [];
 
-// database.conection
-// db.connect((err, _, done) => {
-//   if (err) {
-//     return console.log(err);
-//   } else {
-//     console.log("Connection database success");
-//     done();
-//   }
-// });
+// database.conection;
+db.connect((err, _, done) => {
+  if (err) {
+    return console.log(err);
+  } else {
+    console.log("Connection database success");
+    done();
+  }
+});
 
 app.set("view engine", "hbs");
 app.use("/public", express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
-// app.use(express.static("images"));
+app.use(express.static("images"));
 
 // app.get("/index", (req, res) => {
-//   res.send("/index");
+//   res.send("index");
 // });
-// // console.log(__dirname);
 
 app.get("/index", (req, res) => {
-  // db.connect((err, client, done) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  //   const query = "SELECT * FROM  tb_project";
+  db.connect((err, client, done) => {
+    if (err) {
+      console.log(err);
+    }
+    const query = "SELECT * FROM tb_project";
 
-  //   client.query(query, (err, result) => {
-  //     if (err) throw err;
+    client.query(query, (err, result) => {
+      if (err) throw err;
 
-  //     const data = result.rows;
-  const newProject = addProject.map((project) => {
-    project.author = `Mr. Agus Alfandi`;
-    project.startDate = new Date(project.startDate);
-    project.endDate = new Date(project.endDate);
-    project.time = getFullTime(project.endDate, project.startDate);
+      const data = result.rows;
+      const newProject = data.map((project) => {
+        project.author = `Mr. Agus Alfandi`;
+        project.start_date = new Date(project.start_date);
+        project.end_date = new Date(project.end_date);
+        project.time = getFullTime(project.end_date, project.start_date);
 
-    return project;
+        return project;
+      });
+      done();
+      // console.log("database:", newProject);
+      res.render("index", { addProject: newProject });
+    });
   });
-
-  console.log("data jadi", addProject);
-  res.render("index", { addProject: newProject });
 });
-// });
-// done();
-// });
-// });
 
 app.post("/updateData/:id", (req, res) => {
-  const { id } = req.params;
-  const { title, startDate, endDate, description } = req.body;
+  const id = req.params.id;
+  const { title, start_date, end_date, description, technologies } = req.body;
+  db.connect((err, client, done) => {
+    if (err) throw err;
 
-  addProject[id] = {
-    ...addProject[id],
-    title,
-    startDate,
-    endDate,
-    description,
-    // Image: req.body.Image,
-  };
+    const query = `UPDATE tb_project 
+    SET title = '${title}', 
+    start_date = '${start_date}', 
+    end_date = '${end_date}', 
+    description = '${description}',
+    technologies = '[${technologies}]',
+    WHERE id = ${id}`;
 
-  res.redirect("/index");
+    client.query(query, (err) => {
+      if (err) console.log(err);
 
-  // res.send(Data);
+      // technologies = '${technologies}'
+      // console.log(newData);
+      done();
+      res.redirect("/index");
+    });
+  });
 });
 
 app.get("/updateData/:id", (req, res) => {
-  const { id } = req.params;
-  const Data = addProject[id];
-  console.log("data menta update:", Data);
-  res.render("updateData", { Data: { ...Data, id } });
+  const id = req.params.id;
+
+  db.connect((err, client, done) => {
+    if (err) throw err;
+
+    const query = `SELECT * FROM tb_project WHERE id = ${id}`;
+
+    client.query(query, (err, result) => {
+      if (err) throw err;
+
+      done();
+      // console.log(result.rows[0]);
+      res.render("updateData", { Data: result.rows[0] });
+    });
+  });
+  // console.log("data menta updatep:", Data);
 });
 
 app.post("/add-project", (req, res) => {
-  const data = req.body;
-  data.author = "Agus Alfandi";
-  data.postAt = new Date();
+  const { title, start_date, end_date, description, technologies } = req.body;
+  // data.author = "Agus Alfandi";
+  db.connect((err, client, done) => {
+    if (err) {
+      console.log(err);
+    }
+    const query = `INSERT INTO tb_project(title, start_date, end_date, description, technologies) 
+  VALUES ('${title}', '${start_date}', '${end_date}','${description}', '{${technologies}}')`;
 
-  // const tech = addProject.forEach((techno) => {
-  //
-  // data.technologies = tech;
-
-  addProject.push(data);
+    client.query(query, (err) => {
+      if (err) throw err;
+      done();
+      res.redirect("/index");
+    });
+  });
 
   // console.log("data mentah", addProject);
-  res.redirect("/index");
 });
 
-app.get("/DetailProject/:index", (req, res) => {
-  const index = req.params.index;
-  const project = addProject[index];
-  const newProject = {
-    ...project,
-    startDate: new Date(project.startDate),
-    endDate: new Date(project.endDate),
-    time: getFullTime(project.endDate, project.startDate),
-  };
+app.get("/DetailProject/:id", (req, res) => {
+  const id = req.params.id;
+  // const { title, start_date, end_date, description, technologies } = req.body;
+  db.connect((err, client, done) => {
+    if (err) console.log(err);
+    const query = `SELECT * FROM tb_project WHERE id = ${id}`;
 
-  console.log(index);
+    client.query(query, (err, result) => {
+      done();
+      if (err) throw err;
 
-  res.render("DetailProject", { project: newProject });
+      let newData = result.rows;
+      const newProject = newData.map((project) => {
+        project.author = `Mr. Agus Alfandi`;
+        project.start_date = new Date(project.start_date);
+        project.end_date = new Date(project.end_date);
+        project.time = getFullTime(project.end_date, project.start_date);
+
+        return project;
+      });
+
+      // console.log("=============");
+      // console.log("database detail:", newProject);
+      res.render("DetailProject", { newData: newProject });
+    });
+  });
 });
 
-app.get("/delete-project/:index", (req, res) => {
-  const index = req.params.index;
-  addProject.splice(index, 1);
+app.get("/delete-project/:id", (req, res) => {
+  const id = req.params.id;
+  db.connect((err, client, done) => {
+    if (err) console.log(err);
+
+    const query = `DELETE FROM tb_project WHERE id = ${id}`;
+
+    client.query(query, (err) => {
+      if (err) throw err;
+      done();
+    });
+  });
 
   res.redirect("/index");
 });
@@ -132,11 +175,11 @@ app.listen(port, () => {
   console.log(`Exemple app listen port ${port} `);
 });
 
-function getFullTime(endDate, startDate) {
-  let startMonth = startDate.getMonth();
-  let endMonth = endDate.getMonth();
-  let startYear = startDate.getFullYear();
-  let endYear = endDate.getFullYear();
+function getFullTime(end_date, start_date) {
+  let startMonth = start_date.getMonth();
+  let endMonth = end_date.getMonth();
+  let startYear = start_date.getFullYear();
+  let endYear = end_date.getFullYear();
 
   if (startYear == endYear) {
     if (startMonth == endMonth) {
@@ -174,24 +217,3 @@ function getFullTime(endDate, startDate) {
     }
   }
 }
-
-// function checkBox(checkbox, checkbox1, checkbox2, checkbox3) {
-//   if (checkbox == true) {
-//     let checkbox = document.getElementById("node");
-//     return (checkbox +=
-//       '<img value="node" id="node" src="./public/img/node.png">');
-//   }
-//   console.log(checkbox);
-//   if (checkbox1 == true) {
-//     let checkbox1 = document.getElementById("react").src;
-//     console.log(checkbox1);
-//   }
-//   if (checkbox2 == true) {
-//     let checkbox2 = document.getElementById("javascript");
-//     console.log(checkbox2);
-//   }
-//   if (checkbox3 == true) {
-//     let checkbox3 = document.getElementById("typescript");
-//     console.log(checkbox3);
-//   }
-// }

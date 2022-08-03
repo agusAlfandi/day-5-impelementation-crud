@@ -1,9 +1,9 @@
 function ContacMe() {
-  let name = document.getElementById("input-full-name").value;
-  let email = document.getElementById("input-email").value;
+  let name = document.getElementById("fullname").value;
+  let email = document.getElementById("email").value;
   let phone = document.getElementById("phone").value;
-  let subject = document.getElementById("input-subject").value;
-  let message = document.getElementById("desc-contact-me").value;
+  let subject = document.getElementById("subject").value;
+  let message = document.getElementById("description").value;
 
   //   console.log(name);
   //   console.log(email);
